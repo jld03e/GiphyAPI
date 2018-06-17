@@ -7,38 +7,66 @@
 </head>
 <body>
     <div id='buttons'></div>
-    
-    
-    
+    <div id='gifs-be-here-bruh'>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-      // Example queryURL for Giphy API
-      
+
+//created an array of objects filled with people from the office. 
+//the office will serve as my topic.
+
+    var topics = ["Donald Trump", "Barack Obama", "George Bush", "Richard Nixon", "Bill Clinton"];
+
+//added for loop to display array as buttons in the html.
+
+    for (var i = 0; i < topics.length; i++) {
+        $('#buttons').append("<button data-office=" + topics[i] + ">" + topics[i] +"</button>");
+    };
+
+        $("button").on('click', function() {
+        
+        var characters = $(this).attr("data-office");
+
+        console.log(this);
+
+    
+      // Example queryURL for Giphy API  
       var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
   
       $.ajax({
         url: queryURL,
         method: "GET"
-      }).then(function(response) {
+      })
+      
+      .then(function(response) {
+
+        console.log(queryURL);
         console.log(response);
-//before writing anything else, creating an array of objects,
-//filled with people from the office. the office will serve
-//as my topic.
-//also, creating a variable that allows access to specific objects from array
+
+//created a variable that allows access to specific objects from array
 //to display in the html.
 
         var results = response.data;
 
-        var topics = ["Michael Scott", "Jim Halpert", "Pam Beesly", "Dwight Schrute", "Andy Bernard"];
+//now, creating for loop to loop through the resulting items.
 
-//created a for loop to create buttons out of the topics listed in the topics
-//array.
-        for (var i = 0; i < topics.length; i++) {
-            $('#buttons').append("<input name='office-button' id='office' type='button' value=" + topics[i] + "</input><br>");
+        for (var j = 0; j < results.length; j++) {
+
+            var officeDiv = $("<div>");
+
+            var p = $("<p>").text("Rating: " + results[j].rating);
+            
+            var officeImage = $("<img>");
+
+            officeImage.attr("src", results[j].images.fixed_height.url);
+
+            officeDiv.append(p);
+            officeDiv.append(officeImage);
+
+            $("#gifs-be-here-bruh").prepend(officeDiv);
         }
 
-
-
+            });
       });
     </script>
 </body>
