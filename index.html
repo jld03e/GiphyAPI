@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+    
     <div id='buttons'></div>
     <div id='gifs-be-here-bruh'>
     </div>
@@ -15,7 +16,7 @@
 //created an array of objects filled with people from the office. 
 //the office will serve as my topic.
 
-    var topics = ["Donald Trump", "Barack Obama", "George Bush", "Richard Nixon", "Bill Clinton"];
+    var topics = ["Friends", "Seinfeld", "Curb Your Enthusiasm", "Frasier", "SNL", "Homer Simpson"];
 
 //added for loop to display array as buttons in the html.
 
@@ -31,7 +32,7 @@
 
     
       // Example queryURL for Giphy API  
-      var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + characters + "&api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
   
       $.ajax({
         url: queryURL,
@@ -58,7 +59,15 @@
             
             var officeImage = $("<img>");
 
+//adding attributes to the gifs as they come in, that are supposed to
+//make the gifs still and not move. they reference the for loops results,
+//but, right now, dont keep the image still.
             officeImage.attr("src", results[j].images.fixed_height.url);
+            officeImage.attr("data-still", results[j].images.fixed_height.url);
+            officeImage.attr("data-animate", results[j].images.fixed_height.url);
+            officeImage.attr("data-state", "still");
+            officeImage.attr("class", "gif");
+
 
             officeDiv.append(p);
             officeDiv.append(officeImage);
