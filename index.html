@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Giphy API Test Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id='buttons'></div>
+    
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // Example queryURL for Giphy API
+      
+      var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
+  
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        console.log(response);
+//before writing anything else, creating an array of objects,
+//filled with people from the office. the office will serve
+//as my topic.
+//also, creating a variable that allows access to specific objects from array
+//to display in the html.
+
+        var results = response.data;
+
+        var topics = ["Michael Scott", "Jim Halpert", "Pam Beesly", "Dwight Schrute", "Andy Bernard"];
+
+//created a for loop to create buttons out of the topics listed in the topics
+//array.
+        for (var i = 0; i < topics.length; i++) {
+            $('#buttons').append("<input name='office-button' id='office' type='button' value=" + topics[i] + "</input><br>");
+        }
+
+
+
+      });
+    </script>
+</body>
+</html>
