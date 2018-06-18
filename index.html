@@ -6,9 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+
+<!-- added divs for buttons and forms that we'll dynamically link to jscript.-->
+    <div id="90-view"></div>
+
+    <form id="movie-form">
+      <label for="90-input">Add 90s Nostalgia</label>
+      <input type="text" id="90-input"><br>
+
+      <!-- Button triggers new movie to be added -->
+      <input id="add-90" type="submit" value="Add 90s Nostalgia">
+
     
     <div id='buttons'></div>
-    <div id='gifs-be-here-bruh'>
+    <div id='gifs-go-here'>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -23,23 +34,19 @@
     for (var i = 0; i < topics.length; i++) {
         $('#buttons').append("<button data-office=" + topics[i] + ">" + topics[i] +"</button>");
     };
-
-        $("button").on('click', function() {
-        
+        $("button").on('click', function() {        
         var characters = $(this).attr("data-office");
-
         console.log(this);
 
-    
-      // Example queryURL for Giphy API  
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + characters + "&api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
+    //QueryURL for Giphy API  
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + characters + "&api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
   
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
       
-      .then(function(response) {
+    .then(function(response) {
 
         console.log(queryURL);
         console.log(response);
@@ -51,7 +58,7 @@
 
 //now, creating for loop to loop through the resulting items.
 
-        for (var j = 0; j < results.length; j++) {
+        for (var j = 0; j < 10; j++) {
 
             var officeDiv = $("<div>");
 
@@ -62,20 +69,29 @@
 //adding attributes to the gifs as they come in, that are supposed to
 //make the gifs still and not move. they reference the for loops results,
 //but, right now, dont keep the image still.
-            officeImage.attr("src", results[j].images.fixed_height.url);
-            officeImage.attr("data-still", results[j].images.fixed_height.url);
+            officeImage.attr("src", results[j].images.fixed_height_still.url);
+            officeImage.attr("data-still", results[j].images.fixed_height_still.url);
             officeImage.attr("data-animate", results[j].images.fixed_height.url);
             officeImage.attr("data-state", "still");
             officeImage.attr("class", "gif");
-
-
             officeDiv.append(p);
             officeDiv.append(officeImage);
 
-            $("#gifs-be-here-bruh").prepend(officeDiv);
+            $("#gifs-go-here").prepend(officeDiv);
         }
 
+            $(".gif").on('click', function() {
+            var state = $(this).attr("data-state");
+            
+            if (state === "still") {
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+                }
             });
+        });
       });
     </script>
 </body>
