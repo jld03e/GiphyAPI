@@ -6,38 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
-<!-- added divs for buttons and forms that we'll dynamically link to jscript.-->
-    <div id="90-view"></div>
-
-    <form id="movie-form">
-      <label for="90-input">Add 90s Nostalgia</label>
-      <input type="text" id="90-input"><br>
-
-      <!-- Button triggers new movie to be added -->
-      <input id="add-90" type="submit" value="Add 90s Nostalgia">
-
-    
+    <!--created div to log the gifs that'll appear after button is pressed.-->
     <div id='buttons'></div>
+
+    <br>
+    <br>
+    <br>
+
+    <!-- added divs for buttons and forms that we'll dynamically link to jscript.-->
+    <div id="show-view"></div>
+
+    <form id="show-form">
+      <label for="show-input">Add Shows Nostalgia</label>
+      <input type="text" id="show-input"><br>
+
+      <!-- Button triggers new show to be added -->
+      <input id="add-show" type="submit" value="Add shows Nostalgia">
+
+      <br>
+      <br>
+
+      
     <div id='gifs-go-here'>
     </div>
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-//created an array of objects filled with people from the office. 
-//the office will serve as my topic.
 
-    var topics = ["Friends", "Seinfeld", "Curb Your Enthusiasm", "Frasier", "SNL", "Homer Simpson"];
+   var topics = ["Friends", "Seinfeld", "Curb Your Enthusiasm", "Frasier", "SNL", "Homer Simpson"];
 
-//added for loop to display array as buttons in the html.
+//added for loop to display array as buttons in the html
 
+
+    function renderButtons() {
+        $("#buttons").empty();
     for (var i = 0; i < topics.length; i++) {
-        $('#buttons').append("<button data-office=" + topics[i] + ">" + topics[i] +"</button>");
+        $('#buttons').append("<button data-shows=" + topics[i] + ">" + topics[i] +"</button>");
     };
-        $("button").on('click', function() {        
-        var characters = $(this).attr("data-office");
-        console.log(this);
+    };
 
+        $("#add-show").on('click',function(event) {
+        event.preventDefault();
+        var newTopic = $("#show-input").val().trim();
+        topics.push(newTopic);
+        renderButtons();
+    });
+
+    renderButtons();
+
+        function displayButtonInfo () {
+        
+        var characters = $(this).attr("data-shows");
     //QueryURL for Giphy API  
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + characters + "&api_key=ByukPRSrPKZDd7LROgKl5HUfKDFw8345";
   
@@ -69,6 +91,8 @@
 //adding attributes to the gifs as they come in, that are supposed to
 //make the gifs still and not move. they reference the for loops results,
 //but, right now, dont keep the image still.
+
+
             officeImage.attr("src", results[j].images.fixed_height_still.url);
             officeImage.attr("data-still", results[j].images.fixed_height_still.url);
             officeImage.attr("data-animate", results[j].images.fixed_height.url);
@@ -78,21 +102,30 @@
             officeDiv.append(officeImage);
 
             $("#gifs-go-here").prepend(officeDiv);
+
         }
 
             $(".gif").on('click', function() {
+
             var state = $(this).attr("data-state");
             
             if (state === "still") {
                 $(this).attr("src", $(this).attr("data-animate"));
                 $(this).attr("data-state", "animate");
+
             } else {
                 $(this).attr("src", $(this).attr("data-still"));
                 $(this).attr("data-state", "still");
                 }
+
             });
+
         });
-      });
+
+      };
+
+      $(document).on("click", "button", displayButtonInfo);
+
     </script>
 </body>
 </html>
